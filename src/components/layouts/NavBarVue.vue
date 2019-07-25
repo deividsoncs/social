@@ -1,4 +1,5 @@
 <template>
+ <div class="navbar-fixed">
     <nav :class="cor || 'green darken-1'">
         <div class="nav-wrapper container">
             <a :href="url || '#'" class="brand-logo"> {{ logo || 'Sem Logo Definido'}}</a>
@@ -9,12 +10,13 @@
             </ul>
         </div>
     </nav>  
+  </div>
 </template>
 
 <script>
 export default {
   props: ['logo', 'url', 'cor'], 
-  name: 'NavBar',
+  name: 'NavBarVue',
   data () {
     return {
       
