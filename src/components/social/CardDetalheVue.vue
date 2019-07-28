@@ -1,7 +1,7 @@
 <template>
   <span>
       <div v-if="srcconteudo" class="card-image">
-        <img :src="srcconteudo">
+        <img :src="srcconteudo" class="responsive-img">
         <span class="card-title"><strong>{{ titulo || '' }}</strong></span>
       </div>
       <div v-if="texto" class="card-content">
