@@ -8,12 +8,13 @@
             <h2>Login</h2>
             <input type="text" placeHolder="E-mail:" value="" class="email required"/>
             <input type="text" placeHolder="Senha:" value=""/>
-            <button type="button" class="btn">
+            <button type="button" class="btn waves-effect waves-light">
                 Entrar
                 <i class="material-icons right">send</i>
             </button>
-            <router-link class="btn orange" to="/login/cadastro">
+            <router-link class="btn orange waves-effect waves-light" to="/login/cadastro">
                 Cadastre-se
+                <i class="material-icons right">description</i>
             </router-link>            
         </span>
     </span>

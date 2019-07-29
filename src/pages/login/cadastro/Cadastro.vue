@@ -9,8 +9,8 @@
             <input type="text" placeHolder="E-mail:" class="email" value=""/>
             <input type="text" placeHolder="Senha:" class="password" value=""/>
             <input type="text" placeHolder="Confirme sua senha:" class="password" value=""/>
-            <button href="#/" type="button" name="button" class="btn">Enviar</button>
-            <router-link class="btn orange" to="/login">
+            <button href="#/" type="button" name="button" class="btn waves-effect waves-light">Enviar</button>
+            <router-link class="btn orange waves-effect waves-light" to="/login">
                 Já possuo conta!
                 <i class="material-icons">description</i>
             </router-link>
