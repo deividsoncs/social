@@ -5,7 +5,7 @@
                     <li v-if="!usuario"><router-link to="/login">Entrar</router-link></li>
                         <li v-if="!usuario"><router-link to="/login/cadastro">Cadastre-se</router-link></li>
                         <li v-if="usuario"><router-link to="/">{{ usuario.name }}</router-link></li>
-                        <li v-if="usuario"><a v-on:click="sair()"Sair</a></li>
+                        <li v-if="usuario"><a v-on:click="sair()">Sair</a></li>
                 </nav-bar-vue>
             </header>
             <main>
@@ -63,12 +63,15 @@
             if(usuarioAux){
                 //console.log('wow usuario');
                 this.usuario = JSON.parse(usuarioAux);
+            }else{
+                this.$router.push('/login');
             }
         },
         methods: {
             sair(){
                 sessionStorage.clear();
-                this.usuario = false
+                this.usuario = false;
+                this.$router.push('/login');
             }
         },
     };
