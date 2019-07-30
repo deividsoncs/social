@@ -1,28 +1,27 @@
 <template>
-  <login-template-vue>          
+  <login-template-vue>
     <span slot="menuesquerdo">        
-        <img src="/static/img/social_login.jpg" alt="" class="responsive-img"/>
-    </span>
-    <span slot="principal">
-        <span v-if="!cadastro">
-            <h2>Login</h2>
-            <input type="text" placeHolder="E-mail:" value="" class="email required"/>
-            <input type="text" placeHolder="Senha:" value=""/>
-            <button type="button" class="btn waves-effect waves-light">
-                Entrar
-                <i class="material-icons right">send</i>
-            </button>
-            <router-link class="btn orange waves-effect waves-light" to="/login/cadastro">
-                Cadastre-se
-                <i class="material-icons right">description</i>
-            </router-link>            
+            <img src="/static/img/social_login.jpg" alt="" class="responsive-img"/>
         </span>
-    </span>
+    <span slot="principal">        
+                <h2>Login</h2>
+                <input type="text" placeHolder="E-mail:" class="email required" v-model="usuario.email"/>
+                <input type="password" placeHolder="Senha:" v-model="usuario.password"/>
+                <button type="button" class="btn waves-effect waves-light" v-on:click="login()">
+                    Entrar
+                    <i class="material-icons right">send</i>
+                </button>
+                <router-link class="btn orange waves-effect waves-light" to="/login/cadastro">
+                    Cadastre-se
+                    <i class="material-icons right">description</i>
+                </router-link>            
+        </span>
   </login-template-vue>
 </template>
 
 <script>
-  import LoginTemplateVue from "@/templates/LoginTemplateVue";  
+  import LoginTemplateVue from "@/templates/LoginTemplateVue";
+  import axios from 'axios';
   export default {
     name: 'Login',
     components: {
@@ -30,7 +29,41 @@
     },
     data() {
       return {
-        
+        usuario: {
+          email: '',
+          password: ''
+        }
+      }
+    },
+    methods: {
+      login() {
+        //console.log('OK login');
+        axios.post('http://localhost:8000/api/login', {
+            email: this.usuario.email,
+            password: this.usuario.password
+          })
+          .then((response) => {
+            if(response.data.token){
+              //login com sucesso!
+              sessionStorage.setItem('usuario', JSON.stringify(response.data));
+              //manda para rota x              
+              this.$router.push('/');
+            }else if(response.data.status == false){
+              //login não existe
+            }else{
+              //erro de validacao
+              let erros = '';
+              for(let erro of Object.values(response.data)){
+                erros += erro + " ";
+              }
+              alert(erros);
+            }
+            console.log(response);
+          })
+          .catch(function(error) {
+            console.log(error);
+            alert('Tente novamento mais tarde! Servidor off-line!')
+          });
       }
     }
   }

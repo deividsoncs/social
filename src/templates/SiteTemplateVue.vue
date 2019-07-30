@@ -2,8 +2,10 @@
     <span>
             <header>
                 <nav-bar-vue logo="Jump! Social" url="#/" cor="green darken-1">
-                    <li><router-link to="/">Home</router-link></li>
-                    <li><router-link to="/login">Entrar</router-link></li>
+                    <li v-if="!usuario"><router-link to="/login">Entrar</router-link></li>
+                        <li v-if="!usuario"><router-link to="/login/cadastro">Cadastre-se</router-link></li>
+                        <li v-if="usuario"><router-link to="/">{{ usuario.name }}</router-link></li>
+                        <li v-if="usuario"><a v-on:click="sair()"Sair</a></li>
                 </nav-bar-vue>
             </header>
             <main>
@@ -45,12 +47,30 @@
     import CardMenuVue from "@/components/social/CardMenuVue";
     export default {
         name: "SiteTemplateVue",
+        data(){
+            return {
+                usuario: false
+            }
+        },
         components: {
             NavBarVue,
             FooterVue,
             GridVue,
             CardMenuVue
-        }
+        },
+        created(){
+            let usuarioAux = sessionStorage.getItem('usuario');
+            if(usuarioAux){
+                //console.log('wow usuario');
+                this.usuario = JSON.parse(usuarioAux);
+            }
+        },
+        methods: {
+            sair(){
+                sessionStorage.clear();
+                this.usuario = false
+            }
+        },
     };
 </script>
 
