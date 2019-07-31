@@ -1,11 +1,11 @@
 <template>
   <site-template-vue>
     <span slot="menuesquerdo">            
-        <card-menu-vue src="https://bit.ly/2LE4kp5" nome="Deividson Calixto" detalhe="Yeap! Let's code!!"></card-menu-vue>
+        <card-menu-vue :src="usuario.imagem || 'https://bit.ly/2LE4kp5'" nome="Deividson Calixto" detalhe="Yeap! Let's code!!"></card-menu-vue>
     </span>
     <span slot="pagina">
         <publicar-conteudo-vue/>
-        <card-conteudo-vue srcperfil="https://bit.ly/2LE4kp5" nome="Deividson Calixto" data="24/07/2019 20:28">
+        <card-conteudo-vue :srcperfil="usuario.imagem || 'https://bit.ly/2LE4kp5'" nome="Deividson Calixto" data="24/07/2019 20:28">
           <card-detalhe-vue srcconteudo="https://bit.ly/32QQxk3" texto="Divisa de Pernambuco com Alagoas." 
             titulo="Entre Divisas..."  />
         </card-conteudo-vue>
@@ -29,8 +29,23 @@
       PublicarConteudoVue
     },
     data() {
-      return {}
-    }    
+      return {
+        usuario: {
+          name: '',
+          email: '',
+          password: '',
+          password_confirmation: '',
+          imagem: ''
+          }
+      }
+    },
+    created(){
+      let usuarioAux = sessionStorage.getItem('usuario');
+        if (usuarioAux) {
+          //console.log('wow usuario');
+          this.usuario = JSON.parse(usuarioAux);
+        }
+    }
   }
 </script>
 

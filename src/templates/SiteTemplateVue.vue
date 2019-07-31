@@ -1,10 +1,10 @@
 <template>
     <span>
             <header>
-                <nav-bar-vue logo="Jump! Social" url="#/" cor="green darken-1">
+                <nav-bar-vue logo="Jump! Social" url="/" cor="green darken-1">
                     <li v-if="!usuario"><router-link to="/login">Entrar</router-link></li>
                         <li v-if="!usuario"><router-link to="/login/cadastro">Cadastre-se</router-link></li>
-                        <li v-if="usuario"><router-link to="/">{{ usuario.name }}</router-link></li>
+                        <li v-if="usuario"><router-link to="/perfil">{{ usuario.name }}</router-link></li>
                         <li v-if="usuario"><a v-on:click="sair()">Sair</a></li>
                 </nav-bar-vue>
             </header>
