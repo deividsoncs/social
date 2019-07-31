@@ -41,8 +41,7 @@
     },
     created(){
       let usuarioAux = sessionStorage.getItem('usuario');
-        if (usuarioAux) {
-          //console.log('wow usuario');
+        if (usuarioAux) {          
           this.usuario = JSON.parse(usuarioAux);
         }
     }
