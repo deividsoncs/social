@@ -6,12 +6,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
-
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -38,4 +39,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];    
+    
+    public function conteudos()
+    {
+        return $this->hasMany('App\Conteudo');
+    }
+
+    public function amigos(){
+        return $this->belongsToMany('App\User', 'amigos', 'user_id', 'amigo_id');
+    }
 }

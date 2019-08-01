@@ -39,7 +39,8 @@
             password: '',
             password_confirmation: '',
             imagem: ''
-          }
+          },
+          imagemAux: ''
         }
       },
       created() {
@@ -59,10 +60,10 @@
           }
           let reader = new FileReader();
           reader.onload = (e) => {
-            this.usuario.imagem = e.target.result;
+            this.imagemAux = e.target.result;
+            this.usuario.imagem = this.imagemAux;
           }
-          reader.readAsDataURL(arquivo[0]);
-          console.log(this.usuario.imagem)
+          reader.readAsDataURL(arquivo[0]);          
         },
 
         perfil() {
@@ -72,7 +73,7 @@
               email: this.usuario.email,
               password: this.usuario.password,
               password_confirmation: this.usuario.password_confirmation,
-              imagem: this.usuario.imagem
+              imagem: this.imagemAux || ''
             }, {"headers":{"authorization":"Bearer " + this.usuario.token}})
             .then((response) => {
               if (response.data.token) {
@@ -91,7 +92,7 @@
             })
             .catch(function(error) {
               console.log(error);
-              alert('Tente novamento mais tarde! Servidor off-line!')
+              alert('Tente novamente mais tarde! Servidor off-line!')
             });
         }
       }

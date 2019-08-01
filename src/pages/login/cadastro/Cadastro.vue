@@ -38,7 +38,7 @@
     },
     methods:{
       cadastrar() {
-        console.log('OK cadastrando...');
+        //console.log('OK cadastrando...');
         axios.post('http://localhost:8000/api/login/cadastro', {
             name: this.usuario.name,
             email: this.usuario.email,
