@@ -17,25 +17,27 @@ class UserController extends Controller
         $data = $request->all();
 
         //realiza validação
-        $validacao = \Validator::make($data, [
+        $validacao = Validator::make($data, [
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string'],
         ]);
-    
         if ($validacao->fails()) {
-            return $validacao->errors();
-        }
-            
+            return ['status'=> false, 'validacao' => true, 'erros' => $validacao->errors()];
+        }        
+        try { 
         //autentica o usuário
-        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
-            $user = auth()->user();
-            //criar o token do usuário com base no email(unique)
-            $user->token = $user->createToken($user->email)->accessToken;
-            //asset helper do Laravel que monta o caminho relativo para a imagem
-            $user->imagem = asset($user->imagem);
-            return $user;
-        } else {
-            return ['status' => false];
+            if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
+                $user = auth()->user();
+                //criar o token do usuário com base no email(unique)
+                $user->token = $user->createToken($user->email)->accessToken;
+                //asset helper do Laravel que monta o caminho relativo para a imagem
+                $user->imagem = asset($user->imagem);            
+                return ['status' => true, 'usuario' => $user];
+            } else {
+                return ['status' => false];
+            }
+        }catch (Exception $e){
+            return  ['status' => false, 'exceptions' => $e->getMessage()];
         }
     }
 
@@ -78,7 +80,7 @@ class UserController extends Controller
         ]);
     
         if ($validacao->fails()) {
-            return $validacao->errors();
+            return ['status'=> false, 'validacao' => true, 'erros' => $validacao->errors()];
         }
         
     
@@ -87,13 +89,20 @@ class UserController extends Controller
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'imagem' => 'perfil/semfoto.png'
+                'imagem' => 'perfis/semfoto.png'
             ]
         );
         //criar o token do usuário com base no email(unique)
         $user->token = $user->createToken($user->email)->accessToken;
-    
-        return $user;
+        
+        if ($user->id > 0){
+            return ['status'=> true, 'usuario' => $user];
+            
+        }else{
+            return ['status'=> false, 'validacao' => false];
+        }
+
+        
     }
 
     /**
@@ -137,7 +146,7 @@ class UserController extends Controller
                 'password' => ['required', 'string', 'min:6', 'confirmed'],
             ]);
             if ($validacao->fails()) {
-                return $validacao->errors();
+                return ['status' => false, 'validacao' => true, 'erros' => $validacao->errors()];
             }
             //return $data['password'];
             $data['password'] = Hash::make($data['password']);
@@ -153,7 +162,7 @@ class UserController extends Controller
             ]);
             
             if ($validacao->fails()) {
-                return $validacao->errors();
+                return ['status' => false, 'validacao' => true, 'erros' => $validacao->errors()];
             }
 
             $user->name = $data['name'];
@@ -194,7 +203,7 @@ class UserController extends Controller
             ],['base64image' => 'imagem inválida!']);
             
             if ($validacao->fails()) {
-                return $validacao->errors();
+                return ['status' => false, 'validacao' => true, 'erros' => $validacao->errors()];
             }
 
             $time = time();
@@ -239,7 +248,7 @@ class UserController extends Controller
 
         //criar o token do usuário com base no email(unique)
         $user->token = $user->createToken($user->email)->accessToken;
-        return $user;    
+        return ['status' => true, 'validacao' => false, 'usuario' => $user];   
     }
 
     /**

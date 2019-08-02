@@ -19,8 +19,7 @@
 </template>
 
 <script>
-  import LoginTemplateVue from "@/templates/LoginTemplateVue";  
-  import axios from "axios";
+  import LoginTemplateVue from "@/templates/LoginTemplateVue";    
   export default {
     name: 'Cadastro',
     components: {
@@ -39,30 +38,30 @@
     methods:{
       cadastrar() {
         //console.log('OK cadastrando...');
-        axios.post('http://localhost:8000/api/login/cadastro', {
+        this.$http.post(this.$urlAPI + 'login/cadastro', {
             name: this.usuario.name,
             email: this.usuario.email,
             password: this.usuario.password,
             password_confirmation: this.usuario.password_confirmation
           })
           .then((response) => {
-            if(response.data.token){
+            if(response.data.status){
               //login com sucesso!
-              sessionStorage.setItem('usuario', JSON.stringify(response.data));
+              sessionStorage.setItem('usuario', JSON.stringify(response.data.usuario));
               //manda para rota x              
               this.$router.push('/');
-            }else if(response.data.status == false){
+            }else if(response.data.status == false && response.data.validacao){
               //login não existe
-              console.log('Erro ao tentar cadastrar um usuaário!');
-            }else{
               //erro de validacao
               let erros = '';
-              for(let erro of Object.values(response.data)){
+              for(let erro of Object.values(response.data.erros)){
                 erros += erro + " ";
               }
               alert(erros);
-            }
-            console.log(response);
+            }else{
+              console.log(response);
+              alert('Erro no cadastro! Tente novamento mais tarde!!')
+            }            
           })
           .catch(function(error) {
             console.log(error);

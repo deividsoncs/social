@@ -43,8 +43,9 @@ Route::middleware('auth:api')->get('/usuario', function (Request $request) {
 //#################################################################################
 
 Route::get('/testes', function(){
-    $user = User::find(1);
+    //$user = User::find(1);
 
+    //add conteudos
     // $user->conteudos()->create([
     //     'user_id' => '1',
     //     'titulo' => 'Que bacana aprender laravel!',
@@ -56,13 +57,38 @@ Route::get('/testes', function(){
 
     //return $user->conteudos;
 
-    $conteudo = Conteudo::find(1);
-    $conteudo->comentarios()->create([
-        'conteudo_id' => '1',
-        'user_id' => '1',
-        'texto' => 'Todos nós sabemos Thiago!',
-        'data' => '2019-07-31 21:47:00'
-    ]);
+    //add comentarios em conteudo
+    // $conteudo = Conteudo::find(1);
+    // $conteudo->comentarios()->create([
+    //     'conteudo_id' => '1',
+    //     'user_id' => '1',
+    //     'texto' => 'Todos nós sabemos Thiago!',
+    //     'data' => '2019-07-31 21:47:00'
+    // ]);
+    //return $conteudo->comentarios;
 
-    return $conteudo->comentarios;
+    //add amigos
+
+    //$user = User::find(1);
+    //$user2 = User::find(2);
+
+    //permite repetição
+    //$user->amigos()->attach($user2->id);
+    //$user->amigos()->toggle($user2->id);
+    //remover todas ocorrencias de amigos    
+    //$user->amigos()->detach($user2->id);
+    //tira ou retira o amigos, excelentes comando!
+    //$user->amigos()->toggle($user2->id);
+
+
+    //return [$user->amigos];
+    //return $user->amigos;
+
+     $user2 = User::find(2);
+    // $conteudo = Conteudo::find(1);
+    // $conteudo->curtidas()->toggle($user2->id);
+
+    //return $conteudo->curtidas;
+    return $user2->curtidas;
+
 });

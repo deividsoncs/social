@@ -21,7 +21,6 @@
 
 <script>
   import LoginTemplateVue from "@/templates/LoginTemplateVue";
-  import axios from 'axios';
   export default {
     name: 'Login',
     components: {
@@ -38,27 +37,31 @@
     methods: {
       login() {
         //console.log('OK login');
-        axios.post('http://localhost:8000/api/login', {
+        this.$http.post(this.$urlAPI + 'login', {
             email: this.usuario.email,
             password: this.usuario.password
           })
           .then((response) => {
-            if(response.data.token){
+            //padronizei os status como retorno no controller da API
+            if(response.data.status){
               //login com sucesso!
-              sessionStorage.setItem('usuario', JSON.stringify(response.data));
+              sessionStorage.setItem('usuario', JSON.stringify(response.data.usuario));
               //manda para rota x              
               this.$router.push('/');
-            }else if(response.data.status == false){
-              //login não existe
-            }else{
+            }else if(response.data.status == false && response.data.validacao){
+              //login não existe mas eu estou validando
               //erro de validacao
               let erros = '';
-              for(let erro of Object.values(response.data)){
+              for(let erro of Object.values(response.data.erros)){
                 erros += erro + " ";
               }
               alert(erros);
+
+            }else{
+              console.log(response);  
+              alert('Login inválido!');
             }
-            console.log(response);
+            
           })
           .catch(function(error) {
             console.log(error);

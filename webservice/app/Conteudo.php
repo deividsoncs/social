@@ -18,8 +18,19 @@ class Conteudo extends Model
         'data' => 'datetime',
     ];
 
-    public function comentarios(){
+    public function comentarios()
+    {
         return $this->hasMany('App\Comentario');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    public function curtidas()
+    {
+      return $this->belongsToMany('App\User', 'curtidas', 'conteudo_id', 'user_id');
     }
 
 }

@@ -25,7 +25,7 @@
 
 <script>
     import SiteTemplateVue from "@/templates/SiteTemplateVue";
-    import axios from "axios";
+    //import axios from "axios"; ja importei no mais.js
     export default {
       name: 'Perfil',
       components: {
@@ -68,7 +68,7 @@
 
         perfil() {
           //console.log('OK perfil');
-          axios.put('http://localhost:8000/api/perfil', {
+          this.$http.put(this.$urlAPI + 'perfil', {
               name: this.usuario.name,
               email: this.usuario.email,
               password: this.usuario.password,
@@ -76,19 +76,21 @@
               imagem: this.imagemAux || ''
             }, {"headers":{"authorization":"Bearer " + this.usuario.token}})
             .then((response) => {
-              if (response.data.token) {
+              if (response.data.status) {
                 //console.log(response.data);
-                sessionStorage.setItem('usuario', JSON.stringify(response.data));
+                sessionStorage.setItem('usuario', JSON.stringify(response.data.usuario));
                 alert('Perfil Atualizado!');
-              } else {
+              } else if (!response.data.status && response.data.validacao){
                 //erro de validacao
                 let erros = '';
-                for (let erro of Object.values(response.data)) {
+                for (let erro of Object.values(response.data.erros)) {
                   erros += erro + " ";
                 }
                 alert(erros);
-              }
-              console.log(response);
+               }else{
+                 alert('Erro ao tentar Atualizar perfil! Tente mais tarde!');
+                 console.log(response);
+               }                             
             })
             .catch(function(error) {
               console.log(error);

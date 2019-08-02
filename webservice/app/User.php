@@ -45,7 +45,22 @@ class User extends Authenticatable
         return $this->hasMany('App\Conteudo');
     }
 
+    public function comentarios()
+    {
+        return $this->hasMany('App\Comentario');
+    }
+
     public function amigos(){
         return $this->belongsToMany('App\User', 'amigos', 'user_id', 'amigo_id');
+    }
+
+    public function curtidas()
+    {
+      return $this->belongsToMany('App\Conteudo', 'curtidas', 'user_id', 'conteudo_id');
+    }
+
+    public function validateForPassportPasswordGrant($password)
+    {
+        return Hash::check($password, $this->password);
     }
 }

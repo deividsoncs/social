@@ -41,9 +41,9 @@
     },
     created(){
       let usuarioAux = sessionStorage.getItem('usuario');
-        if (usuarioAux) {          
-          this.usuario = JSON.parse(usuarioAux);
-        }
+      if (usuarioAux) {          
+        this.usuario = JSON.parse(usuarioAux);
+      }
     }
   }
 </script>
