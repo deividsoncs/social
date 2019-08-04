@@ -18,7 +18,6 @@ use App\Conteudo;
 */
 //#################################################################################
 //                              USERS
-//#################################################################################
 //cadastro de usuários
 Route::post('/login/cadastro', 'UserController@store');
 
@@ -28,20 +27,16 @@ Route::post('/login', 'UserController@login');
 //atualizando usuários
 Route::middleware('auth:api')->put('/perfil', 'UserController@update');
 
-//
-
-
 Route::middleware('auth:api')->get('/usuario', function (Request $request) {
     return $request->user();
 });
 
 //#################################################################################
-
+//                              CONTEÚDOS
+Route::middleware('auth:api')->post('/conteudo/adicionar', 'ConteudoController@store');
 
 //#################################################################################
 //                              TESTES
-//#################################################################################
-
 Route::get('/testes', function(){
     //$user = User::find(1);
 

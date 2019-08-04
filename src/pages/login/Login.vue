@@ -46,6 +46,8 @@
             if(response.data.status){
               //login com sucesso!
               sessionStorage.setItem('usuario', JSON.stringify(response.data.usuario));
+              //seto o usuário retornado na loja
+              this.$store.commit('setUsuario', response.data.usuario);
               //manda para rota x              
               this.$router.push('/');
             }else if(response.data.status == false && response.data.validacao){

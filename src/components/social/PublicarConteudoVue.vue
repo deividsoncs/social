@@ -8,7 +8,9 @@
             <input v-if="conteudo.titulo && conteudo.texto" type="text" v-model="conteudo.imagem" placeHolder="Imagem">
         </grid-vue>
         <p>
-            <button v-if="conteudo.titulo && conteudo.texto" class="btn col s2 offset-s10 waves-effect waves-light">Publicar</button>
+            <button v-if="conteudo.titulo && conteudo.texto" 
+                class="btn col s2 offset-s10 waves-effect waves-light" 
+                v-on:click="addConteudo()">Publicar</button>
         </p>
     </div>
 </template>
@@ -30,6 +32,22 @@
         },
         components: {
             GridVue
+        },
+        methods:{
+            addConteudo(){
+                console.log(this.conteudo);
+                this.$http.post(this.$urlAPI + 'conteudo/adicionar', {
+                    conteudo: this.conteudo
+                },
+                {'headers':{'authorization':'Bearer ' + this.$store.getters.getToken}}).then(response => {
+                    if (response.data.status){                        
+                        console.log(response.data.conteudos);    
+                    }                    
+                }).catch(e =>{                    
+                    console.log(e);
+                    alert('Erro! tente mais tarde');
+                });                
+            }
         }
     };    
 </script>

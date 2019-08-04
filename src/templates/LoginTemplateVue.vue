@@ -1,8 +1,7 @@
 <template>
     <span>
                 <header>
-                    <nav-bar-vue logo="Jump! Social" url="#/" cor="green darken-1">
-                        <li><router-link to="/">Home</router-link></li>
+                    <nav-bar-vue logo="Jump! Social" url="#/" cor="green darken-1">                        
                         <li v-if="!usuario"><router-link to="/login">Entrar</router-link></li>
                         <li v-if="!usuario"><router-link to="/login/cadastro">Cadastre-se</router-link></li>
                         <li v-if="usuario"><router-link to="/">{{ usuario.name }}</router-link></li>
@@ -61,16 +60,17 @@
         },
         created() {
             //console.log('executei o created()');
-            let usuarioAux = sessionStorage.getItem('usuario');
+            let usuarioAux = this.$store.getters.getUsuario;
             if(usuarioAux){
                 //console.log('wow usuario');
-                this.usuario = JSON.parse(usuarioAux);
+                this.usuario =  this.$store.getters.getUsuario;
                 //se eu tenho usuário logado mando para o /
                 this.$router.push('/');
             }
         },
         methods:{
             sair(){
+                this.$store.commit('setUsuario', null)
                 sessionStorage.clear();
                 this.usuario = false;
             }
