@@ -35,6 +35,8 @@ Route::middleware('auth:api')->get('/usuario', function (Request $request) {
 //                              CONTEÚDOS
 Route::middleware('auth:api')->post('/conteudo/adicionar', 'ConteudoController@store');
 
+Route::middleware('auth:api')->get('/conteudo/lista', 'ConteudoController@lista');
+
 //#################################################################################
 //                              TESTES
 Route::get('/testes', function(){
@@ -84,6 +86,14 @@ Route::get('/testes', function(){
     // $conteudo->curtidas()->toggle($user2->id);
 
     //return $conteudo->curtidas;
+
+
+    //apaga conteudos:
+    // $conteudos = Conteudo::all();
+    // foreach($conteudos as $key => $value){
+    //     $value->delete();
+    // }
+
     return $user2->curtidas;
 
 });

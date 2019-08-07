@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return Hash::check($password, $this->password);
     }
+
+    //realiza um override do atributo
+    public function getImagemAttribute($value){
+        return asset($value);
+    }
 }

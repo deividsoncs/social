@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Conteudo;
+use Illuminate\Support\Facades\Validator;
 
 class ConteudoController extends Controller
 {
+
+    public function lista(Request $request){        
+        return  ['status' => true, 'conteudos' => Conteudo::with('user')->orderBy('data', 'DESC')->paginate(5)];        
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,9 +41,7 @@ class ConteudoController extends Controller
      */
     public function store(Request $request)
     {        
-
-
-        return ['ok'];
+        
         //add conteudos
         $data = $request->all();
         //usuário que está logado!
@@ -45,23 +49,24 @@ class ConteudoController extends Controller
 
         $validacao = Validator::make($data, [
             'titulo' => ['required', 'string', 'max:255'],
-            'texto' => ['required', 'string', 'email', 'max:255'],
+            'texto' => ['required', 'string', 'max:255']            
         ]);
         if ($validacao->fails()) {
             return ['status' => false, 'validacao' => true, 'erros' => $validacao->errors()];
         }
-        return ['status' => true, 'conteudos' => $user->conteudos];
-
+ 
         $conteudo = new Conteudo;
+        
         $conteudo->titulo = $data['titulo'];
         $conteudo->texto = $data['texto'];
+        
         $conteudo->link = $data['link'] ? $data['link'] : '#';
         $conteudo->imagem = $data['imagem'] ? $data['imagem'] : '#';
-        $conteudo->data = date('Y-m-d H:i:s');
-
-        //save quanto temos um Objeto:        
+        $conteudo->data = date('Y-m-d H:i:s');                
+        
+        //save quanto temos um Objeto:                
         $user->conteudos()->save($conteudo);
-        return ['status' => true, 'conteudos' => $user->conteudos];
+        return ['status' => true, 'conteudos' => Conteudo::with('user')->orderBy('data', 'DESC')->paginate(5)];        
 
         //create usas-se quanto array para salvar:
         //     $user->conteudos()->create([

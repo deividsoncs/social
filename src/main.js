@@ -14,7 +14,8 @@ Vue.use(Vuex)
 //loja do vuex
 var store = {
   state: {
-    usuario: sessionStorage.getItem('usuario') ? JSON.parse(sessionStorage.getItem('usuario')) : null
+    usuario: sessionStorage.getItem('usuario') ? JSON.parse(sessionStorage.getItem('usuario')) : null,
+    conteudosLinhaTempo: []
   },
   getters:{
     //testando o getter
@@ -23,11 +24,17 @@ var store = {
     },
     getToken: state =>{
       return state.usuario.token
+    },
+    getConteudosLinhaTempo: state =>{
+      return state.conteudosLinhaTempo;
     }
   },
   mutations:{
     setUsuario(state, n){
       state.usuario = n;
+    },
+    setConteudosLinhaTempo(state,n){
+      state.conteudosLinhaTempo = n;
     }
   }
 }

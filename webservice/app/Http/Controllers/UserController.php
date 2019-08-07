@@ -31,7 +31,7 @@ class UserController extends Controller
                 //criar o token do usuário com base no email(unique)
                 $user->token = $user->createToken($user->email)->accessToken;
                 //asset helper do Laravel que monta o caminho relativo para a imagem
-                $user->imagem = asset($user->imagem);            
+                //$user->imagem = asset($user->imagem);            
                 return ['status' => true, 'usuario' => $user];
             } else {
                 return ['status' => false];
@@ -224,9 +224,12 @@ class UserController extends Controller
 
             //se exitir a image e irei apagá-la
             if ($user->imagem){
-                if(file_exists($user->imagem)){
+                //tabalho para retirar o URL da imagem externa para verificar na pasta
+                $imgUser = str_replace(asset('/'), '', $user->imagem);
+
+                if(file_exists($imgUser)){
                     //remove o arquivo.
-                    unlink($user->imagem);
+                    unlink($imgUser);
                 }
             }
 
@@ -244,7 +247,7 @@ class UserController extends Controller
         $user->save();    
 
         //asset helper do Laravel que monta o caminho relativo para a imagem
-        $user->imagem = asset($user->imagem);
+        //$user->imagem = asset($user->imagem);
 
         //criar o token do usuário com base no email(unique)
         $user->token = $user->createToken($user->email)->accessToken;

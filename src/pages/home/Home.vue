@@ -1,13 +1,14 @@
 <template>
   <site-template-vue>
     <span slot="menuesquerdo">            
-        <card-menu-vue :src="usuario.imagem || 'https://bit.ly/2LE4kp5'" nome="Deividson Calixto" detalhe="Yeap! Let's code!!"></card-menu-vue>
+        <card-menu-vue :src="usuario.imagem || 'https://bit.ly/2LE4kp5'" :nome="usuario.name" detalhe="fazer essas msg"></card-menu-vue>
     </span>
     <span slot="pagina">
         <publicar-conteudo-vue/>
-        <card-conteudo-vue :srcperfil="usuario.imagem || 'https://bit.ly/2LE4kp5'" nome="Deividson Calixto" data="24/07/2019 20:28">
-          <card-detalhe-vue srcconteudo="https://bit.ly/32QQxk3" texto="Divisa de Pernambuco com Alagoas." 
-            titulo="Entre Divisas..."  />
+        <card-conteudo-vue v-for='item in listaConteudos' :key="item.id" :srcperfil="item.user.imagem || 'https://bit.ly/2LE4kp5'" 
+          :nome="item.user.name" :data="item.data">
+          <card-detalhe-vue :srcconteudo="item.imagem" :texto="item.titulo" 
+            :titulo="item.texto"  />
         </card-conteudo-vue>
       </span>
   </site-template-vue>
@@ -36,13 +37,33 @@
           password: '',
           password_confirmation: '',
           imagem: ''
-          }
+          },
       }
     },
     created(){
       let usuarioAux = sessionStorage.getItem('usuario');
       if (usuarioAux) {          
         this.usuario = JSON.parse(usuarioAux);
+
+        this.$http.get(this.$urlAPI + 'conteudo/lista', 
+            {"headers":{"authorization":"Bearer " + this.usuario.token}})
+            .then((response) => {
+              if (response.data.status){
+                //this.conteudos = response.data.conteudos.data;
+                this.$store.commit('setConteudosLinhaTempo', response.data.conteudos.data);
+                
+              }
+                
+            })
+            .catch(function(error) {
+              console.log(error);
+              alert('Tente novamente mais tarde! Servidor off-line!')
+            });
+      }
+    },
+    computed:{
+      listaConteudos(){
+        return this.$store.getters.getConteudosLinhaTempo;
       }
     }
   }
